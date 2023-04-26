@@ -1,0 +1,30 @@
+<mat-toolbar color="primary">
+  <span>Planificación semanal</span>
+  <span class="spacer"></span>
+  <mat-form-field appearance="fill">
+    <mat-label>Fecha</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="currentDate" (ngModelChange)="handleDateChange()" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</mat-toolbar>
+
+<mat-card *ngFor="let day of schedule">
+  <mat-card-header>
+    <mat-card-title [ngClass]="{'selected': day.date === currentDate.toLocaleDateString()}">{{ day.name }} - {{ day.date }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <ng-container *ngIf="day.goals && day.goals.length > 0; else noGoals">
+        <mat-list-item *ngFor="let goal of day.goals">
+          <h4 matLine><strong>{{ goal.category }}:</strong> {{ goal.name }}</h4>
+        </mat-list-item>
+      </ng-container>
+      <ng-template #noGoals>
+        <mat-list-item>
+          <span>No hay objetivos para este día</span>
+        </mat-list-item>
+      </ng-template>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
